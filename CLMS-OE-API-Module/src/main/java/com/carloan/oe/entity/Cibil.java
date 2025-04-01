@@ -1,4 +1,4 @@
-package com.carloan.oe.controller;
+package com.carloan.oe.entity;
 
 import lombok.Data;
 
