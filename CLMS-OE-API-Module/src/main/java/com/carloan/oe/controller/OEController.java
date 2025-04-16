@@ -49,5 +49,23 @@ public class OEController {
 		
 		return new ResponseEntity<Integer>(genCibil, HttpStatus.OK);		
 	}
+	
+	@GetMapping("/updateLoanApplicationDocumentsToVerified/{id}")
+	public ResponseEntity<String> updateLoanApplicationDocumentsToVerified(@PathVariable("id") Integer id ){
+		
+		String url = "http://localhost:7002/loanApplication/updateStatusToDocumentVerified/"+id;
+		String msg =rt.getForObject(url, String.class);
+		
+		return new ResponseEntity<String>(msg, HttpStatus.OK);		
+	}
+	
+	@GetMapping("/updateLoanApplicationDocumentsToRejected/{id}")
+	public ResponseEntity<String> updateLoanApplicationDocumentsToRejected(@PathVariable("id") Integer id ){
+		
+		String url = "http://localhost:7002/loanApplication/updateStatusToDocumentRejected/"+id;
+		String msg =rt.getForObject(url, String.class);
+		
+		return new ResponseEntity<String>(msg, HttpStatus.OK);		
+	}
 
 }
