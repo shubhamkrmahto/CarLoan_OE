@@ -5,18 +5,22 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.carloan.oe.entity.Cibil;
 import com.carloan.oe.entity.Enquiry;
 
+@CrossOrigin
 @RestController
+@RequestMapping("OE")
 public class OEController {
 	
 	@Autowired
@@ -39,15 +43,21 @@ public class OEController {
 		return new ResponseEntity<List<Enquiry>>(enquiry, HttpStatus.OK);		
 	}
 
-	@GetMapping("/UpdateCibil")
-	public ResponseEntity<Integer> UpdadteCibil(){
+	@GetMapping("/updateCibil/{id}")
+	public ResponseEntity<String> UpdateCibil(@PathVariable("id") Integer id){
 		
-		String url = "http://localhost:9001/cibil/generateCibil";
-		Integer genCibil = rt.getForObject(url, Integer.class);
+		String url = "http://localhost:7002/enquiry/getSingleEnquiry/"+id;
+		Enquiry enq = rt.getForObject(url, Enquiry.class);
+		
+		String url1 = "http://localhost:9001/cibil/generateCibil";
+		Integer genCibil = rt.getForObject(url1, Integer.class);
+		
+		String url2 = "http://localhost:7002/enquiry/updateStatus/"+enq.getEnquiryId()+"/"+genCibil;
+		String msg = rt.getForObject(url2, String.class);
 		
 		System.out.println(genCibil);
 		
-		return new ResponseEntity<Integer>(genCibil, HttpStatus.OK);		
+		return new ResponseEntity<String>(msg, HttpStatus.OK);		
 	}
 	
 	@GetMapping("/updateLoanApplicationDocumentsToVerified/{id}")
