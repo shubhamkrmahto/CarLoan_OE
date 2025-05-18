@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +18,7 @@ import com.carloan.oe.entity.Cibil;
 import com.carloan.oe.entity.Enquiry;
 
 @RestController
+@CrossOrigin("*")
 public class OEController {
 	
 	@Autowired
@@ -39,11 +41,14 @@ public class OEController {
 		return new ResponseEntity<List<Enquiry>>(enquiry, HttpStatus.OK);		
 	}
 
-	@GetMapping("/UpdateCibil")
+	@GetMapping("/checkcibil")
 	public ResponseEntity<Integer> UpdadteCibil(){
 		
-		String url = "http://localhost:9001/cibil/generateCibil";
-		Integer genCibil = rt.getForObject(url, Integer.class);
+		String url1 = "http://localhost:9001/cibil/generateCibil";
+		Integer genCibil = rt.getForObject(url1, Integer.class);
+		
+		//updating cibil score in crm
+		String url2 = "http://localhost:7002/cibil/updatecibil";
 		
 		System.out.println(genCibil);
 		
