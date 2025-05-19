@@ -27,7 +27,8 @@ public class OEController {
 		String url ="http://localhost:9090/crm/enquiry/getSingleEnquiry/"+ id;
 		Enquiry enquiry = rt.getForObject(url, Enquiry.class);
 		
-		return new ResponseEntity<Enquiry>(enquiry, HttpStatus.OK);		
+		return new ResponseEntity<Enquiry>(enquiry, HttpStatus.OK);
+	}
 
 	@GetMapping("/getallenquiries")
 	public ResponseEntity<List<Enquiry>> getEnquiry(){
