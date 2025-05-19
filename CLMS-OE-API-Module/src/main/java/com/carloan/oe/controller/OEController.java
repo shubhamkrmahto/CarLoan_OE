@@ -29,7 +29,7 @@ public class OEController {
 	
 	@GetMapping("/getenquiry/{id}")
 	public ResponseEntity<Enquiry> getEnquiry(@PathVariable Integer id){
-		String url ="http://localhost:7000/enquiry/getSingleEnquiry/"+ id;
+		String url ="http://localhost:9090/crm/enquiry/getSingleEnquiry/"+ id;
 		Enquiry enquiry = rt.getForObject(url, Enquiry.class);
 		
 		return new ResponseEntity<Enquiry>(enquiry, HttpStatus.OK);		
@@ -37,7 +37,7 @@ public class OEController {
 	
 	@GetMapping("/getallenquiries")
 	public ResponseEntity<List<Enquiry>> getEnquiry(){
-		String url = "http://localhost:7000/enquiry/enquirysenttooe";
+		String url = "http://localhost:9090/crm/enquiry/enquirysenttooe";
 		List<Enquiry> enquiry = rt.getForObject(url, List.class);
 		
 		return new ResponseEntity<List<Enquiry>>(enquiry, HttpStatus.OK);		
@@ -46,13 +46,13 @@ public class OEController {
 	@GetMapping("/updateCibil/{id}")
 	public ResponseEntity<String> UpdateCibil(@PathVariable("id") Integer id){
 		
-		String url = "http://localhost:7002/enquiry/getSingleEnquiry/"+id;
+		String url = "http://localhost:9090/crm/enquiry/getSingleEnquiry/"+id;
 		Enquiry enq = rt.getForObject(url, Enquiry.class);
 		
-		String url1 = "http://localhost:9001/cibil/generateCibil";
+		String url1 = "http://localhost:9090/cibil/cibil/generateCibil";
 		Integer genCibil = rt.getForObject(url1, Integer.class);
 		
-		String url2 = "http://localhost:7002/enquiry/updateStatus/"+enq.getEnquiryId()+"/"+genCibil;
+		String url2 = "http://localhost:9090/crm/enquiry/updateStatus/"+enq.getEnquiryId()+"/"+genCibil;
 		String msg = rt.getForObject(url2, String.class);
 		
 		System.out.println(genCibil);
@@ -63,7 +63,7 @@ public class OEController {
 	@GetMapping("/updateLoanApplicationDocumentsToVerified/{id}")
 	public ResponseEntity<String> updateLoanApplicationDocumentsToVerified(@PathVariable("id") Integer id ){
 		
-		String url = "http://localhost:7002/loanApplication/updateStatusToDocumentVerified/"+id;
+		String url = "http://localhost:9090/crm/loanApplication/updateStatusToDocumentVerified/"+id;
 		String msg =rt.getForObject(url, String.class);
 		
 		return new ResponseEntity<String>(msg, HttpStatus.OK);		
@@ -72,7 +72,7 @@ public class OEController {
 	@GetMapping("/updateLoanApplicationDocumentsToRejected/{id}")
 	public ResponseEntity<String> updateLoanApplicationDocumentsToRejected(@PathVariable("id") Integer id ){
 		
-		String url = "http://localhost:7002/loanApplication/updateStatusToDocumentRejected/"+id;
+		String url = "http://localhost:9090/crm/loanApplication/updateStatusToDocumentRejected/"+id;
 		String msg =rt.getForObject(url, String.class);
 		
 		return new ResponseEntity<String>(msg, HttpStatus.OK);		
