@@ -14,7 +14,6 @@ import org.springframework.web.client.RestTemplate;
 
 import com.carloan.oe.entity.Enquiry;
 
-@CrossOrigin("*")
 @RestController
 @RequestMapping("/oe")
 public class OEController {
