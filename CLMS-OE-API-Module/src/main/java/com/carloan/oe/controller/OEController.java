@@ -2,6 +2,8 @@ package com.carloan.oe.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,9 @@ public class OEController {
 
 	@Autowired
 	RestTemplate rt;
+	
+	private static final Logger log = LoggerFactory.getLogger(OEController.class);
+	
 
 	@GetMapping("/getenquiry/{id}")
 	public ResponseEntity<Enquiry> getEnquiry(@PathVariable Integer id){
@@ -33,9 +38,12 @@ public class OEController {
 	public ResponseEntity<List<Enquiry>> getEnquiry(){
 		String url = "http://localhost:9090/crm/enquiry/enquirysenttooe";
 		List<Enquiry> enquiry = rt.getForObject(url, List.class);
+		
+		log.info("OE get All Enquiries for Check Cibil");
+		return new ResponseEntity<List<Enquiry>>(enquiry, HttpStatus.OK);		
 
-		return new ResponseEntity<List<Enquiry>>(enquiry, HttpStatus.OK);
 	}
+	
 
 	@GetMapping("/updateCibil/{id}")
 	public ResponseEntity<String> UpdateCibil(@PathVariable("id") Integer id){
@@ -46,10 +54,9 @@ public class OEController {
 		Integer genCibil = rt.getForObject(url1, Integer.class);
 		String url2 = "http://localhost:9090/crm/enquiry/updateStatus/"+enq.getEnquiryId()+"/"+genCibil;
 		String msg = rt.getForObject(url2, String.class);
-
-		System.out.println(genCibil);
-
-		return new ResponseEntity<String>(msg, HttpStatus.OK);
+		
+		log.info("Genrated Cibil is : "+genCibil +" for this id :- "+enq.getEnquiryId() +" from OE");
+		return new ResponseEntity<String>(msg, HttpStatus.OK);		
 	}
 
 	@GetMapping("/updateLoanApplicationDocumentsToVerified/{id}")
@@ -57,7 +64,7 @@ public class OEController {
 		
 		String url = "http://localhost:9090/crm/loanApplication/updateStatusToDocumentVerified/"+id;
 		String msg =rt.getForObject(url, String.class);
-		
+		log.info("LoanApplication Document Varified from OE  id is :- "+id);
 		return new ResponseEntity<String>(msg, HttpStatus.OK);
 	}
 
@@ -66,7 +73,7 @@ public class OEController {
 		
 		String url = "http://localhost:9090/crm/loanApplication/updateStatusToDocumentRejected/"+id;
 		String msg =rt.getForObject(url, String.class);
-		
+		log.info("LoanApplication Document Rejected from OE  id is :- "+id);
 		return new ResponseEntity<String>(msg, HttpStatus.OK);
 	}
 
